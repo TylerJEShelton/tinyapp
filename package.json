@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/TylerJEShelton/tinyapp/issues"
   },
-  "homepage": "https://github.com/TylerJEShelton/tinyapp#readme"
+  "homepage": "https://github.com/TylerJEShelton/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
