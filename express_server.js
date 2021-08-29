@@ -10,7 +10,7 @@ function generateRandomString() {
   for (i = 0; i < stringLength; i++) {
     randomString += characters[Math.floor(Math.random() * characters.length)];
   }
-  console.log(randomString);
+  return randomString;
 };
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,9 +22,10 @@ const urlDatabase = {
 };
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
-  generateRandomString();
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  const newShortURL = generateRandomString();
+  urlDatabase[newShortURL] = req.body.longURL;
+  const templateVars = { shortURL: newShortURL, longURL: req.body.longURL };
+  res.render("urls_show", templateVars);
 });
 
 app.get("/", (req, res) => {
