@@ -3,11 +3,11 @@ const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 
-function generateRandomString() {
+const generateRandomString = () => {
   let randomString = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const stringLength = 6;
-  for (i = 0; i < stringLength; i++) {
+  for (let i = 0; i < stringLength; i++) {
     randomString += characters[Math.floor(Math.random() * characters.length)];
   }
   return randomString;
@@ -31,6 +31,12 @@ app.post("/urls", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
+});
+
+app.post("/urls/:shortURL", (req, res) => {
+  urlDatabase[req.params.shortURL] = req.body.longURL;
+  const templateVars = { shortURL: req.params.shortURL, longURL: req.body.longURL };
+  res.render("urls_show", templateVars);
 });
 
 app.get("/", (req, res) => {
