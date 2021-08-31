@@ -34,6 +34,20 @@ app.post("/urls", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+app.post("/register", (req, res) => {
+  // const newShortURL = generateRandomString();
+  // urlDatabase[newShortURL] = req.body.longURL;
+  // const templateVars = {
+  //   username: req.cookies["username"],
+  //   shortURL: newShortURL,
+  //   longURL: req.body.longURL
+  // };
+  // res.render("urls_show", templateVars);
+  console.log(req.body);
+  console.log(res.body);
+  res.redirect("/urls");
+});
+
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
@@ -73,6 +87,14 @@ app.get("/urls", (req, res) => {
     urls: urlDatabase
   };
   res.render("urls_index", templateVars);
+});
+
+app.get("/register", (req, res) => {
+  const templateVars = {
+    username: req.cookies["username"],
+    urls: urlDatabase
+  };
+  res.render("urls_register", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
