@@ -4,20 +4,6 @@ const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 
-const generateRandomString = () => {
-  let randomString = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const stringLength = 6;
-  for (let i = 0; i < stringLength; i++) {
-    randomString += characters[Math.floor(Math.random() * characters.length)];
-  }
-  return randomString;
-};
-
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -36,6 +22,28 @@ const users = {
   }
 };
 
+const generateRandomString = () => {
+  let randomString = "";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const stringLength = 6;
+  for (let i = 0; i < stringLength; i++) {
+    randomString += characters[Math.floor(Math.random() * characters.length)];
+  }
+  return randomString;
+};
+
+const lookupUserByEmail = email => {
+  for (const id in users) {
+    if (users[id].email === email) return true;
+  }
+  return false;
+}
+
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+
+
 app.post("/urls", (req, res) => {
   const newShortURL = generateRandomString();
   urlDatabase[newShortURL] = req.body.longURL;
@@ -48,20 +56,23 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  // const newShortURL = generateRandomString();
-  // urlDatabase[newShortURL] = req.body.longURL;
-  // const templateVars = {
-  //   username: req.cookies["username"],
-  //   shortURL: newShortURL,
-  //   longURL: req.body.longURL
-  // };
-  // res.render("urls_show", templateVars);
   const newUserID = generateRandomString();
+  const email = req.body.email;
+  const password = req.body.password;
+
+  if (!email || !password) {
+    return res.status(400).send("The email and/or password entered are blank.  These fields must contain values and can't be left blank.");
+  }
+  if (lookupUserByEmail(email)) {
+    return res.status(400).send("This email is already associated with a user.  Please register with a new email address or login with the email you provided.");
+  }
+
   users[newUserID] = {
     id: newUserID,
-    email: req.body.email,
-    password: req.body.password
+    email: email,
+    password: password
   };
+
   res.cookie("user_id", newUserID);
   console.log(req.body);
   console.log(users);
