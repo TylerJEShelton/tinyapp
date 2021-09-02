@@ -86,6 +86,9 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 app.post("/login", (req, res) => {
   res.cookie("user_id", req.body.user_id);
+  console.log(req.body.user_id);
+  console.log(res.cookies);
+  console.log(req.body);
   res.redirect("/urls");
 });
 
@@ -126,6 +129,14 @@ app.get("/register", (req, res) => {
     urls: urlDatabase
   };
   res.render("urls_register", templateVars);
+});
+
+app.get("/login", (req, res) => {
+  const templateVars = {
+    user: users[req.cookies["user_id"]],
+    urls: urlDatabase
+  };
+  res.render("login", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {

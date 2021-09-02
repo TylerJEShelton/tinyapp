@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-  <title>New URL - TinyApp</title>
+  <title>Login - TinyApp</title>
 </head>
 
 <body>
@@ -17,15 +17,20 @@
   <%- include('partials/_header') %>
 
     <main style="margin: 1em;">
-      <h3>Create TinyURL</h3>
-      <form class="form-inline" action="/urls" method="POST">
-        <div class="form-group mb-2">
-          <label for="longURL">Enter a URL:</label>
-          <input class="form-control" type="text" name="longURL" placeholder="http://"
-            style="width: 300px; margin: 1em">
+      <h3>Login</h3>
+      <div class="form-group mb-2">
+        <form class="form-inline" action="/login" method="POST">
+          <!-- Email Address Field -->
+          <label for="email">Email Address:</label>
+          <input class="form-control" type="email" name="email" placeholder="example@email.com"
+            style="width: 400px; margin: 1em">
+          <!-- Password Field -->
+          <label for="password">Password:</label>
+          <input class="form-control" type="password" name="password" placeholder="" style="width: 400px; margin: 1em">
           <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
+        </form>
+
+      </div>
     </main>
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
