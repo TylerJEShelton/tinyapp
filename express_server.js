@@ -34,7 +34,7 @@ const generateRandomString = () => {
 
 const lookupUserByEmail = email => {
   for (const id in users) {
-    if (users[id].email === email) return true;
+    if (users[id].email === email) return id;
   }
   return false;
 }
@@ -76,6 +76,7 @@ app.post("/register", (req, res) => {
   res.cookie("user_id", newUserID);
   console.log(req.body);
   console.log(users);
+  console.log(req.cookies);
   res.redirect("/urls");
 });
 
@@ -85,10 +86,23 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie("user_id", req.body.user_id);
-  console.log(req.body.user_id);
+  const email = req.body.email;
+  const password = req.body.password;
+  const userID = lookupUserByEmail(email);
+
+  if (!email || !password) {
+    return res.status(400).send("The email and/or password entered are blank.  These fields must contain values and can't be left blank.");
+  }
+  if (!userID) {
+    return res.status(400).send("This email does not have an account registered.  Please register with this email address or login with a different email address that is already associated with an account.");
+  }
+
+  if (users[userID].password !== password) {
+    return res.status(400).send("You have entered the incorrect password.  Please try again.");
+  }
+
+  res.cookie("user_id", userID);
   console.log(res.cookies);
-  console.log(req.body);
   res.redirect("/urls");
 });
 
