@@ -10,27 +10,19 @@
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
         <div class="inline-flex" style="right: 25px; position: absolute;">
-          <% console.log(user); %>
-            <% if (!user) { %>
-
-              <div class="navbar-nav">
-                <a class="nav-item nav-link" href="/login">Login</a>
-                <a class="nav-item nav-link" href="/register">Register</a>
-              </div>
-              <!-- <form class="form-inline position-absolute-right " action="/login" method="POST"> -->
-
-              <!-- <input class="form-control" type="text" name="user_id" placeholder="User ID" -->
-              <!-- style="width: 225px; margin-right: 10px;"> -->
-              <!-- <button type="submit" class="btn btn-outline-dark">Login</button> -->
-              <!-- </form> -->
-              <% } else { %>
-                <form class="form-inline justify-content-right" action="/logout" method="POST">
-                  <label for="email" style="margin-right: 10px;">
-                    Logged in as: <%= user.email %>
-                  </label>
-                  <button type="submit" class="btn btn-outline-dark">Logout</button>
-                </form>
-                <% } %>
+          <% if (!user) { %>
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href="/login">Login</a>
+              <a class="nav-item nav-link" href="/register">Register</a>
+            </div>
+            <% } else { %>
+              <form class="form-inline justify-content-right" action="/logout" method="POST">
+                <label for="email" style="margin-right: 10px;">
+                  Logged in as: <%= user.email %>
+                </label>
+                <button type="submit" class="btn btn-outline-dark">Logout</button>
+              </form>
+              <% } %>
         </div>
       </div>
     </div>
