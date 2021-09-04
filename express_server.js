@@ -46,7 +46,7 @@ const generateRandomString = () => {
 };
 
 // function takes in an email and returns the user id that's associated with that email or false if the user doesn't exist
-const lookupUserByEmail = email => {
+const lookupUserByEmail = (email, database) => {
   for (const id in users) {
     if (users[id].email === email) return id;
   }
@@ -79,7 +79,7 @@ app.post("/urls", (req, res) => {
   urlDatabase[newShortURL]["userID"] = userID;
   //urlDatabase[newShortURL]["userID"] = req.cookies["user_id"];
   const templateVars = {
-    user: users[req.session.user_id],
+    user: users[userID],
     //user: users[req.cookies["user_id"]],
     shortURL: newShortURL,
     longURL: req.body.longURL
