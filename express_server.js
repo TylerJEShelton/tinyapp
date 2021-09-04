@@ -1,8 +1,11 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const bcrypt = require('bcrypt');
+
 const app = express();
 const PORT = 8080; // default port 8080
-const bodyParser = require("body-parser");
+const saltRounds = 12;
 
 const urlDatabase = {
   "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: "HxTaMS" },
@@ -15,17 +18,17 @@ const users = {
   "SgFq8X": {
     id: "SgFq8X",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+    password: "$2b$12$UPN2lUaoX5NUXW/QVWa3iuakUIF08jXUYiGssIsx3I9e8NreJjcYa" // purple-monkey-dinosaur
   },
   "HxTaMS": {
     id: "HxTaMS",
     email: "user2@example.com",
-    password: "dishwasher-funk"
+    password: "$2b$12$ous9UjTKm9y0Rmi5WxXQZO8yg16ZgIJgaoc6kuWDZMcCCYWk/P3F6" // dishwasher-funk
   },
   "e8LUlT": {
     id: "e8LUlT",
     email: "tylertheman@gmail.com",
-    password: "123GarbageCan%"
+    password: "$2b$12$6yDJfQkLIhJKodyLeamvMumb4BVDAtptg3kbdWMra6mLYkUNRy7ai" // 123GarbageCan%
   }
 };
 
@@ -91,10 +94,11 @@ app.post("/register", (req, res) => {
     return res.status(400).send("This email is already associated with a user.  Please register with a new email address or login with the email you provided.");
   }
 
+  const hashedPassword = bcrypt.hashSync(password, saltRounds);
   users[newUserID] = {
     id: newUserID,
     email: email,
-    password: password
+    password: hashedPassword
   };
 
   res.cookie("user_id", newUserID);
@@ -106,7 +110,7 @@ app.post("/register", (req, res) => {
 
 app.post("/urls/:shortURL/delete", (req, res) => {
   if (urlDatabase[req.params.shortURL].userID !== req.cookies["user_id"]) {
-    return res.status(400).send("This is not your link!  Please sign in to the proper account to access this link!");
+    return res.status(403).send("This is not your link!  Please sign in to the proper account to access this link!");
   }
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
@@ -124,8 +128,9 @@ app.post("/login", (req, res) => {
     return res.status(400).send("This email does not have an account registered.  Please register with this email address or login with a different email address that is already associated with an account.");
   }
 
-  if (users[userID].password !== password) {
-    return res.status(400).send("You have entered the incorrect password.  Please try again.");
+  //if (users[userID].password !== password) {
+  if (!bcrypt.compareSync(password, users[userID].password)) {
+    return res.status(403).send("You have entered the incorrect password.  Please try again.");
   }
 
   res.cookie("user_id", userID);
