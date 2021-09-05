@@ -184,9 +184,9 @@ app.post("/urls/:shortURL", (req, res) => {
 // GET Endpoints
 
 //temporary endpoint to visually view the current urlDatabase for debugging purposes
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
-});
+// app.get("/urls.json", (req, res) => {
+//   res.json(urlDatabase);
+// });
 
 // temporary endpoint to visually view the current users for debugging purposes
 // app.get("/users.json", (req, res) => {
