@@ -4,11 +4,11 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["screenshot description"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot1.png)
-!["screenshot description"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot2.png)
-!["screenshot description"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot5.png)
-!["screenshot description"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot3.png)
-!["screenshot description"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot4.png)
+!["Main URLs page when not logged in"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot1.png)
+!["Main URLs page when logged in with a user that has no URLs"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot2.png)
+!["Main URLs page when logged in with a user that has URLs"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot3.png)
+!["Short URL detail page"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot5.png)
+!["Error handling page"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot4.png)
 
 ## Dependencies
 
