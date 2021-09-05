@@ -25,35 +25,40 @@
           </tr>
         </thead>
         <tbody>
-          <% if(Object.keys(urls).length===0) { %>
-            <div class="alert alert-warning">
-              <strong>Error!</strong> Please Register/Login and create URLs in order to see them below!
+          <% if(Object.keys(urls).length===0 && !user) { %>
+            <div class="alert alert-info">
+              <strong>Error!</strong> Please Register Or Login!
             </div>
             <% } %>
-              <% if(urls) { %>
-                <% for(let url in urls) { %>
-                  <tr>
-                    <td>
-                      <a href='urls/<%=url %>'>
-                        <%= url %>
-                      </a>
-                    </td>
-                    <td>
-                      <%=urls[url].longURL %>
-                    </td>
-                    <td>
-                      <form method="GET" action="/urls/<%=url %>">
-                        <button type="submit" class="btn btn-outline-primary">Edit</button>
-                      </form>
-                    </td>
-                    <td>
-                      <form method="POST" action="/urls/<%=url %>/delete">
-                        <button type="submit" class="btn btn-outline-danger">Delete</button>
-                      </form>
-                    </td>
-                  </tr>
-                  <% } %>
-                    <% } %>
+              <% if(Object.keys(urls).length===0 && user) { %>
+                <div class="alert alert-info">
+                  <strong>Error!</strong> Please Create URLs To Show Them Below!
+                </div>
+                <% } %>
+                  <% if(urls) { %>
+                    <% for(let url in urls) { %>
+                      <tr>
+                        <td>
+                          <a href='urls/<%=url %>'>
+                            <%= url %>
+                          </a>
+                        </td>
+                        <td>
+                          <%=urls[url].longURL %>
+                        </td>
+                        <td>
+                          <form method="GET" action="/urls/<%=url %>">
+                            <button type="submit" class="btn btn-outline-primary">Edit</button>
+                          </form>
+                        </td>
+                        <td>
+                          <form method="POST" action="/urls/<%=url %>/delete">
+                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                          </form>
+                        </td>
+                      </tr>
+                      <% } %>
+                        <% } %>
         </tbody>
       </table>
       <!-- <p>
