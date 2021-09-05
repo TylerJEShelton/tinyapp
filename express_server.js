@@ -1,7 +1,7 @@
 // Program Name: TinyApp
 // Written By: Tyler Shelton
 // Started On: August 28, 2021
-// Description: This program allows a user to login/register as a user and create, store and share short URLs for longer URLs 
+// Description: This program allows a user to login/register as a user and create, store and share short URLs for longer URLs
 // ---------------------------------------------------------------------------------------------------------------------------------
 
 // Requires and constants
@@ -57,7 +57,7 @@ app.use(cookieSession({
 app.post("/urls", (req, res) => {
   // generates a random 6 letter string to be the shortURL
   const newShortURL = generateRandomString();
-  const userID = req.session.user_id;
+  const userID = req.session.userID;
   const longURL = req.body.longURL;
   urlDatabase[newShortURL] = { "longURL": longURL };
   urlDatabase[newShortURL]["userID"] = userID;
@@ -99,16 +99,16 @@ app.post("/register", (req, res) => {
     password: hashedPassword
   };
   // set the newUserID to the cookie and redirect to the index page
-  req.session.user_id = newUserID;
+  req.session.userID = newUserID;
   res.redirect("/urls");
 });
 
 // deletes the selected short URL from the database
 app.post("/urls/:shortURL/delete", (req, res) => {
-  // if a shortURL delete request is submitted by an unauthorized user, send them to the error page 
-  if (urlDatabase[req.params.shortURL].userID !== req.session.user_id) {
+  // if a shortURL delete request is submitted by an unauthorized user, send them to the error page
+  if (urlDatabase[req.params.shortURL].userID !== req.session.userID) {
     const templateVars = {
-      user: users[req.session.user_id],
+      user: users[req.session.userID],
       error: "403 - Unauthorized access to this link!  You cannot delete this link! Please sign in to the proper account to access this link!"
     };
     return res.status(403).render("error", templateVars);
@@ -149,7 +149,7 @@ app.post("/login", (req, res) => {
     return res.status(403).render("error", templateVars);
   }
   // if the user exists, and logs in successfully with the proper credentials, set the cookie and send them to the index page
-  req.session.user_id = userID;
+  req.session.userID = userID;
   res.redirect("/urls");
 });
 
@@ -159,9 +159,9 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
-// edits the current long URL for the associated short URL 
+// edits the current long URL for the associated short URL
 app.post("/urls/:shortURL", (req, res) => {
-  const userID = req.session.user_id;
+  const userID = req.session.userID;
   const shortURL = req.params.shortURL;
   const longURL = req.body.longURL;
   // if the short URL does not exist, send the user to the error page
@@ -199,7 +199,7 @@ app.get("/", (req, res) => {
 
 // main page which displays urls if logged into a user with urls and a message stating that the viewer needs to registe/login or create new urls
 app.get("/urls", (req, res) => {
-  const userID = req.session.user_id;
+  const userID = req.session.userID;
   const currentUserURLS = urlsForUser(userID, urlDatabase);
   const templateVars = {
     user: users[userID],
@@ -210,7 +210,7 @@ app.get("/urls", (req, res) => {
 
 // registration page for users to create a new account
 app.get("/register", (req, res) => {
-  const userID = req.session.user_id;
+  const userID = req.session.userID;
   const templateVars = {
     user: users[userID],
     urls: urlDatabase
@@ -220,7 +220,7 @@ app.get("/register", (req, res) => {
 
 // login page for users to sign into an existing account
 app.get("/login", (req, res) => {
-  const userID = req.session.user_id;
+  const userID = req.session.userID;
   const templateVars = {
     user: users[userID],
     urls: urlDatabase
@@ -230,7 +230,7 @@ app.get("/login", (req, res) => {
 
 // page that will allow signed in users to create new urls
 app.get("/urls/new", (req, res) => {
-  const userID = req.session.user_id;
+  const userID = req.session.userID;
   // if not signed in, send to the login page
   if (!users[userID]) {
     return res.redirect("/login");
@@ -243,7 +243,7 @@ app.get("/urls/new", (req, res) => {
 
 // this endpoint will redirect users to the long URLs that they have associated with the specific short URL
 app.get("/u/:shortURL", (req, res) => {
-  const userID = req.session.user_id;
+  const userID = req.session.userID;
   // if the shortURL does not exist, send to the error page
   if (!urlDatabase[req.params.shortURL]) {
     const templateVars = {
@@ -258,7 +258,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 // this page will send users to the short URL detail page where they can edit the long URL
 app.get("/urls/:shortURL", (req, res) => {
-  const userID = req.session.user_id;
+  const userID = req.session.userID;
   // if the shortURL does not exist, send to the error page
   if (!urlDatabase[req.params.shortURL]) {
     const templateVars = {
@@ -287,7 +287,7 @@ app.get("/urls/:shortURL", (req, res) => {
 // handles pages that are requested but do not exist
 app.get('*', function(req, res) {
   const templateVars = {
-    user: users[req.session.user_id],
+    user: users[req.session.userID],
     error: "404 - This page does not exist!  Please click one of the links above!"
   };
   return res.status(404).render("error", templateVars);
