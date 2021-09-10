@@ -17,6 +17,14 @@ const lookupUserByEmail = (email, database) => {
   return;
 };
 
+// function takes in a user ID and returns true if the user exists or false if the user doesn't exist
+const checkUserExists = (id, database) => {
+  for (const user in database) {
+    if (user === id) return true;
+  }
+  return false;
+};
+
 // function will loop through the URL database and returns an object of urls that the passed in id is associated with
 const urlsForUser = (id, database) => {
   const usersURLS = {};
@@ -32,5 +40,6 @@ const urlsForUser = (id, database) => {
 module.exports = {
   generateRandomString,
   lookupUserByEmail,
+  checkUserExists,
   urlsForUser
 };

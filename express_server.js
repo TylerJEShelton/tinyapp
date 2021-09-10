@@ -9,7 +9,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const cookieSession = require("cookie-session");
-const { generateRandomString, lookupUserByEmail, urlsForUser } = require("./helpers");
+const { generateRandomString, lookupUserByEmail, checkUserExists, urlsForUser } = require("./helpers");
 const PORT = 8080; // default port 8080
 const saltRounds = 12;  // default saltRounds for bcrypt
 
@@ -125,7 +125,7 @@ app.post("/login", (req, res) => {
   // if either the email or password fields are left blank, send the user to the error page
   if (!email || !password) {
     const templateVars = {
-      user: users[userID],
+      user: users[null],
       error: "400 - The email and/or password entered are blank.  These fields must contain values and can't be left blank."
     };
     return res.status(400).render("error", templateVars);
@@ -183,22 +183,18 @@ app.post("/urls/:shortURL", (req, res) => {
 
 // GET Endpoints
 
-//temporary endpoint to visually view the current urlDatabase for debugging purposes
-// app.get("/urls.json", (req, res) => {
-//   res.json(urlDatabase);
-// });
-
-// temporary endpoint to visually view the current users for debugging purposes
-// app.get("/users.json", (req, res) => {
-//   res.json(users);
-// });
-
 app.get("/", (req, res) => {
   res.redirect("/urls");
 });
 
 // main page which displays urls if logged into a user with urls and a message stating that the viewer needs to registe/login or create new urls
 app.get("/urls", (req, res) => {
+
+  // if the viewer is visiting for the first time or the cookie for a user that no longer exists was stored in the browser, destroy the cookie and redirect to the login page
+  if (!checkUserExists(req.session.userID, users)) {
+    req.session = null;
+    return res.redirect("/login");
+  }
   const userID = req.session.userID;
   const currentUserURLS = urlsForUser(userID, urlDatabase);
   const templateVars = {
