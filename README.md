@@ -4,7 +4,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["Main URLs page when not logged in"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot1.png)
+!["Login Page"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot_login.png)
 !["Main URLs page when logged in with a user that has no URLs"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot2.png)
 !["Main URLs page when logged in with a user that has URLs"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot3.png)
 !["Short URL detail page"](https://github.com/TylerJEShelton/tinyapp/blob/master/screenshots/screenshot5.png)
