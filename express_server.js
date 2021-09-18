@@ -23,22 +23,21 @@ const urlDatabase = {
   "1aLX7o": { longURL: "http://www.tsn.ca", userID: "e8LUlT" },
 };
 
-// Temporarily show the plain text passwords of the 3 sample users
 const users = {
   "SgFq8X": {
     id: "SgFq8X",
     email: "user@example.com",
-    password: "$2b$12$UPN2lUaoX5NUXW/QVWa3iuakUIF08jXUYiGssIsx3I9e8NreJjcYa" // purple-monkey-dinosaur
+    password: "$2b$12$UPN2lUaoX5NUXW/QVWa3iuakUIF08jXUYiGssIsx3I9e8NreJjcYa"
   },
   "HxTaMS": {
     id: "HxTaMS",
     email: "user2@example.com",
-    password: "$2b$12$ous9UjTKm9y0Rmi5WxXQZO8yg16ZgIJgaoc6kuWDZMcCCYWk/P3F6" // dishwasher-funk
+    password: "$2b$12$ous9UjTKm9y0Rmi5WxXQZO8yg16ZgIJgaoc6kuWDZMcCCYWk/P3F6"
   },
   "e8LUlT": {
     id: "e8LUlT",
     email: "tylertheman@gmail.com",
-    password: "$2b$12$6yDJfQkLIhJKodyLeamvMumb4BVDAtptg3kbdWMra6mLYkUNRy7ai" // 123GarbageCan%
+    password: "$2b$12$6yDJfQkLIhJKodyLeamvMumb4BVDAtptg3kbdWMra6mLYkUNRy7ai"
   }
 };
 
@@ -156,7 +155,7 @@ app.post("/login", (req, res) => {
 // Logs the user out when the logout button is pressed and destroys the cookie
 app.post("/logout", (req, res) => {
   req.session = null;
-  res.redirect("/urls");
+  res.redirect("/login");
 });
 
 // edits the current long URL for the associated short URL
